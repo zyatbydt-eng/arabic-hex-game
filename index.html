@@ -411,12 +411,94 @@ body{font-family:'Tajawal','Segoe UI',Arial,sans-serif;direction:rtl;background:
   </div>
   <div class="m-btns">
     <button class="btn btn-mg btn-full" onclick="go('setup')">🎮 &nbsp;لعب جديد</button>
-    <button class="btn btn-mo btn-full" onclick="openDisplay()">📺 &nbsp;فتح شاشة العرض (TV)</button>
-    <button class="btn btn-mp btn-full" onclick="openBuzzer()">🔔 &nbsp;فتح صفحة البازر</button>
+    <button class="btn btn-mo btn-full" onclick="openDisplay()">📺 &nbsp;شاشة العرض (TV)</button>
+    <button class="btn btn-mp btn-full" onclick="go('firebase')">🔥 &nbsp;ربط الأجهزة (Firebase)</button>
+    <button class="btn btn-dark btn-full" onclick="openBuzzer()" style="font-size:15px;padding:12px">🔔 &nbsp;صفحة البازر</button>
   </div>
+  <!-- Connection status -->
+  <div id="m-conn-badge" style="display:none;padding:6px 16px;border-radius:50px;font-size:12px;font-weight:800;border:1.5px solid;margin-top:4px"></div>
   <div class="m-hint">
-    💡 افتح شاشة العرض في نافذة ثانية على الحاسوب المتصل بالتلفاز<br>
-    🔔 صفحة البازر للاعبين على هواتفهم في نفس الجهاز
+    💡 لربط هاتفك كـ GM والكمبيوتر كشاشة عرض — اضغط <strong style="color:#FF9100">ربط الأجهزة</strong>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     FIREBASE SETUP SCREEN
+══════════════════════════════════════ -->
+<div id="s-firebase" class="scr" style="overflow-y:auto;background:var(--bg)">
+  <div class="sw">
+    <div class="sw-hdr">
+      <button class="btn btn-sm btn-ghost" onclick="go('menu')">← رجوع</button>
+      <div class="sw-title">🔥 ربط الأجهزة</div>
+      <div style="width:64px"></div>
+    </div>
+
+    <!-- How it works -->
+    <div class="panel" style="background:#FFF8F0;border-color:#FFB300">
+      <div class="ptitle" style="color:#E65100">📱 كيف يعمل</div>
+      <div style="font-size:13px;color:#7A4400;line-height:1.8">
+        <div>1. أنشئ مشروع مجاني على Firebase</div>
+        <div>2. أدخل رابط قاعدة البيانات هنا</div>
+        <div>3. افتح اللعبة على هاتفك → GM</div>
+        <div>4. افتح الرابط على الكمبيوتر → شاشة عرض</div>
+        <div style="margin-top:6px;padding:6px 10px;background:#FFE0B2;border-radius:8px;font-weight:700">
+          ✅ يعمل من أي مكان — هاتف + كمبيوتر + تلفاز
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="panel">
+      <div class="ptitle">الخطوة 1 — أنشئ مشروع Firebase مجاني</div>
+      <div style="font-size:13px;color:var(--t2);line-height:1.8;margin-bottom:10px">
+        <div>① افتح: <strong>console.firebase.google.com</strong></div>
+        <div>② اضغط <strong>"Add project"</strong> ← أي اسم</div>
+        <div>③ من القائمة الجانبية: <strong>Build → Realtime Database</strong></div>
+        <div>④ اضغط <strong>"Create Database"</strong> ← اختر أي منطقة</div>
+        <div>⑤ في Rules: غيّر <code>false</code> إلى <code>true</code> في القراءة والكتابة ← <strong>Publish</strong></div>
+        <div>⑥ انسخ الرابط من الأعلى (يبدأ بـ https://)</div>
+      </div>
+      <a href="https://console.firebase.google.com" target="_blank"
+         style="display:block;text-align:center;padding:9px;border-radius:12px;background:#FF6D00;color:#fff;font-weight:800;font-size:14px;text-decoration:none">
+        🔗 فتح Firebase Console
+      </a>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="panel">
+      <div class="ptitle">الخطوة 2 — أدخل رابط قاعدة البيانات</div>
+      <div style="font-size:11px;color:var(--t3);margin-bottom:6px">مثال: https://my-game-default-rtdb.firebaseio.com</div>
+      <input id="fb-db-url" type="url" dir="ltr"
+        style="width:100%;background:var(--bg);border:2px solid var(--brd);border-radius:10px;
+               color:var(--t1);font-family:monospace;font-size:13px;padding:9px 12px;outline:none;margin-bottom:8px"
+        placeholder="https://YOUR-PROJECT-default-rtdb.firebaseio.com"
+        oninput="this.style.borderColor=this.value?'var(--g)':'var(--brd)'">
+
+      <div style="font-size:11px;color:var(--t3);margin-bottom:6px">رمز الغرفة (يجمع الأجهزة معاً)</div>
+      <input id="fb-room" type="text" dir="ltr"
+        style="width:100%;background:var(--bg);border:2px solid var(--brd);border-radius:10px;
+               color:var(--t1);font-family:monospace;font-size:15px;padding:9px 12px;outline:none;margin-bottom:12px;text-align:center;font-weight:800"
+        placeholder="ROOM-123" maxlength="20"
+        oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9-]/g,'')">
+
+      <button class="btn btn-g btn-full btn-lg" onclick="connectFirebase()">🔥 اتصل بـ Firebase</button>
+    </div>
+
+    <!-- Status -->
+    <div id="fb-status" style="display:none;padding:12px 14px;border-radius:14px;font-size:14px;font-weight:700;text-align:center;border:2px solid"></div>
+
+    <!-- After connect: copy link -->
+    <div id="fb-after" style="display:none" class="panel">
+      <div class="ptitle" style="color:var(--g)">✅ متصل! شارك الرابط</div>
+      <div style="font-size:12px;color:var(--t2);margin-bottom:8px">افتح هذا الرابط على الكمبيوتر/التلفاز:</div>
+      <div id="fb-share-url"
+        style="background:var(--bg);border:1.5px solid var(--brd);border-radius:10px;
+               padding:10px 12px;font-family:monospace;font-size:11px;color:var(--t2);
+               word-break:break-all;direction:ltr;margin-bottom:8px"></div>
+      <button class="btn btn-gold btn-full" onclick="copyShareUrl()">📋 نسخ الرابط</button>
+      <button class="btn btn-g btn-full" style="margin-top:8px" onclick="go('setup')">🎮 ابدأ اللعبة!</button>
+    </div>
+
   </div>
 </div>
 
@@ -767,67 +849,170 @@ function mkState(){return{
 let ST = mkState();
 let usedCards=new Set(), timerIv=null, timerRem=0, timerMax=0;
 
-/* ═══════════════════════════════
-   BROADCAST  (BroadcastChannel = same browser, same device only)
-   For cross-device: use local network server — see README
-═══════════════════════════════ */
+/* ═══════════════════════════════════════════════
+   SYNC ENGINE
+   Priority: Firebase (cross-device) > BroadcastChannel (same browser)
+   Answer text is NEVER synced — GM eyes only
+═══════════════════════════════════════════════ */
 let BC = null;
-try{ BC = new BroadcastChannel('arb-hex-v5'); } catch(e){}
+try{ BC = new BroadcastChannel('arb-hex-v5'); }catch(e){}
 
-// Also support cross-device via WebSocket (set WS_URL in localStorage)
-let WS = null;
-const WS_URL = localStorage.getItem('ws_url'); // e.g. ws://192.168.1.5:8765
-if(WS_URL && !IS_DISPLAY){
-  try{
-    WS = new WebSocket(WS_URL);
-    WS.onopen = () => console.log('WS connected');
-    WS.onerror = () => { WS=null; console.warn('WS failed, using BroadcastChannel only'); };
-  }catch(e){ WS=null; }
+// Firebase state
+let FB_DB   = null;   // Firebase database URL
+let FB_ROOM = null;   // Room ID
+let FB_CONN = false;  // Connected flag
+let FB_WRITE_TO = null; // debounce timer
+
+// Read saved Firebase config
+(function loadFbConfig(){
+  const cfg = JSON.parse(localStorage.getItem('fb_cfg')||'{}');
+  if(cfg.db) document.getElementById('fb-db-url').value = cfg.db;
+  if(cfg.room) document.getElementById('fb-room').value = cfg.room;
+  if(cfg.db && cfg.room){
+    FB_DB = cfg.db.replace(/\/+$/,'');
+    FB_ROOM = cfg.room;
+    FB_CONN = true;
+    updateConnBadge();
+    if(IS_DISPLAY) startFirebaseListen();
+  }
+})();
+
+function connectFirebase(){
+  const db  = document.getElementById('fb-db-url').value.trim().replace(/\/+$/,'');
+  const room= document.getElementById('fb-room').value.trim()||'ROOM-1';
+  if(!db){ showFbStatus('أدخل رابط قاعدة البيانات!','#EF4444');return; }
+  if(!db.startsWith('https://')){ showFbStatus('الرابط يجب أن يبدأ بـ https://','#EF4444');return; }
+
+  showFbStatus('⏳ جارٍ الاتصال...','#FFB300');
+
+  // Test connection by writing a ping
+  const pingUrl=`${db}/rooms/${room}/ping.json`;
+  fetch(pingUrl,{method:'PUT',body:JSON.stringify({ts:Date.now(),hello:true})})
+    .then(r=>{
+      if(!r.ok) throw new Error(r.status);
+      FB_DB=db; FB_ROOM=room; FB_CONN=true;
+      localStorage.setItem('fb_cfg',JSON.stringify({db,room}));
+      showFbStatus('✅ متصل بنجاح!','#00C853');
+      updateConnBadge();
+      // Show share URL
+      const shareUrl = `${location.origin}${location.pathname}?display=1&fb=${encodeURIComponent(db)}&room=${encodeURIComponent(room)}`;
+      document.getElementById('fb-share-url').textContent = shareUrl;
+      document.getElementById('fb-after').style.display = 'block';
+    })
+    .catch(e=>{
+      showFbStatus('❌ فشل الاتصال — تحقق من الرابط وقواعد Firebase','#EF4444');
+      console.error('Firebase connect error:',e);
+    });
 }
 
+function showFbStatus(msg,color){
+  const el=document.getElementById('fb-status');
+  el.style.display='block';
+  el.style.borderColor=color;
+  el.style.color=color;
+  el.style.background=color+'18';
+  el.textContent=msg;
+}
+
+function copyShareUrl(){
+  const url=document.getElementById('fb-share-url').textContent;
+  navigator.clipboard?.writeText(url).then(()=>toast('✅ تم نسخ الرابط!'))
+    .catch(()=>{ prompt('انسخ هذا الرابط:',url); });
+}
+
+function updateConnBadge(){
+  const b=document.getElementById('m-conn-badge');
+  if(FB_CONN&&FB_DB){
+    b.style.display='flex';
+    b.style.borderColor='#00C853';
+    b.style.background='#00C85315';
+    b.style.color='#00C853';
+    b.textContent=`🔥 متصل — غرفة: ${FB_ROOM}`;
+  } else {
+    b.style.display='none';
+  }
+}
+
+// ── Firebase write (GM only) ──
+function fbWrite(data){
+  if(!FB_CONN||!FB_DB||IS_DISPLAY) return;
+  clearTimeout(FB_WRITE_TO);
+  FB_WRITE_TO = setTimeout(()=>{
+    const url=`${FB_DB}/rooms/${FB_ROOM}/state.json`;
+    fetch(url,{
+      method:'PUT',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({...data, _ts:Date.now()})
+    }).catch(e=>console.warn('FB write error:',e));
+  }, 60); // debounce 60ms
+}
+
+// ── Firebase listen (Display) ──
+let FB_LAST_TS = 0;
+let FB_POLL_IV = null;
+
+function startFirebaseListen(){
+  if(!FB_CONN||!FB_DB) return;
+  // Poll every 800ms (Firebase REST doesn't support SSE in all environments)
+  FB_POLL_IV = setInterval(()=>{
+    const url=`${FB_DB}/rooms/${FB_ROOM}/state.json`;
+    fetch(url)
+      .then(r=>r.json())
+      .then(data=>{
+        if(!data||data._ts===FB_LAST_TS) return;
+        FB_LAST_TS = data._ts;
+        applyDisplayState(data);
+      })
+      .catch(()=>{});
+  }, 800);
+}
+
+// ── Read Firebase params from URL (Display auto-connect) ──
+(function checkUrlParams(){
+  const p = new URLSearchParams(location.search);
+  const fbUrl = p.get('fb');
+  const room  = p.get('room');
+  if(fbUrl && room && IS_DISPLAY){
+    FB_DB   = decodeURIComponent(fbUrl).replace(/\/+$/,'');
+    FB_ROOM = decodeURIComponent(room);
+    FB_CONN = true;
+    startFirebaseListen();
+  }
+})();
+
+// ── Unified broadcast (GM → all channels) ──
 function bcast(extra={}){
   if(IS_DISPLAY) return;
-  const s = ST;
-  const d = {
-    phase:s.phase, cells:{...s.cells}, ltrs:[...s.ltrs], gcfg:{...s.gcfg},
+  const s=ST;
+  const d={
+    phase:s.phase, cells:{...s.cells}, ltrs:[...s.ltrs],
+    gcfg:{cols:s.gcfg?.cols,rows:s.gcfg?.rows,n:s.gcfg?.n},
     aLetter:s.aLetter, buzzTeam:s.buzzTeam, buzzName:s.buzzName,
     winner:s.winner, question:s.aQ,
-    shielded:[...s.shielded],
+    shielded:[...(s.shielded||[])],
     timerRem, timerMax,
     ...extra
-    // aA (answer) NEVER broadcast — only shows on GM device
+    // aA (answer) NEVER included — GM eyes only
   };
-  if(BC) BC.postMessage({t:'state', d});
-  if(WS?.readyState===1) WS.send(JSON.stringify({t:'state',d}));
+  if(BC) BC.postMessage({t:'state',d});
+  fbWrite(d);
 }
 
-function bcastFull(){
-  // Send full state — called when display requests sync
-  bcast({forceFull:true});
-}
+function bcastFull(){ bcast({forceFull:true}); }
 
+// ── Display listeners ──
 if(IS_DISPLAY){
-  // Listen for state
+  // BroadcastChannel (same device/browser)
   if(BC){
-    BC.onmessage = e => {
-      if(e.data?.t==='state') applyDisplayState(e.data.d);
-    };
-    // Request current state from GM (handles opening display mid-game)
-    setTimeout(()=>{
-      BC.postMessage({t:'request_state'});
-    }, 300);
+    BC.onmessage=e=>{ if(e.data?.t==='state') applyDisplayState(e.data.d); };
+    setTimeout(()=>BC.postMessage({t:'request_state'}),300);
   }
+  // Firebase already started above if URL params present
 } else {
-  // GM: respond to state requests from display
+  // GM: respond to state requests
   if(BC){
-    const orig = BC.onmessage;
-    BC.onmessage = e => {
-      if(e.data?.t==='request_state') {
-        // Display just opened and wants current state
-        setTimeout(bcastFull, 100);
-        return;
-      }
-      orig?.(e);
+    BC.onmessage=e=>{
+      if(e.data?.t==='request_state'){ setTimeout(bcastFull,100); }
     };
   }
 }
@@ -839,6 +1024,7 @@ function go(id){
   document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
   document.getElementById('s-'+id).classList.add('on');
   if(id==='setup') renderSetup();
+  if(id==='menu') updateConnBadge();
 }
 function openDisplay(){ window.open(location.href.split('?')[0]+'?display=1','_blank','width=1280,height=720'); }
 function openBuzzer(){ window.open('buzzer.html','_blank','width=450,height=700'); }
