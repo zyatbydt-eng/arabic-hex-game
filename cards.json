@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1, "type": "عقوبة", "emoji": "💥",
+    "title": "سرقة!",
+    "description": "اختر خلية من الفريق المنافس وانقلها لفريقك الآن!",
+    "effect": "steal_cell", "effectTeam": "self"
+  },
+  {
+    "id": 2, "type": "عقوبة", "emoji": "⏪",
+    "title": "تراجع!",
+    "description": "الفريق المنافس يخسر آخر خلية فاز بها - ترجع فارغة!",
+    "effect": "lose_last", "effectTeam": "self"
+  },
+  {
+    "id": 3, "type": "عقوبة", "emoji": "⚡",
+    "title": "5 ثوان فقط!",
+    "description": "الفريق المنافس يجاوب السؤال التالي في 5 ثوان فقط أو يخسر الخلية!",
+    "effect": "timer_fast", "effectTeam": "opponent"
+  },
+  {
+    "id": 4, "type": "عقوبة", "emoji": "🔒",
+    "title": "أصغر لاعب!",
+    "description": "الفريق المنافس: أصغر لاعب عندهم هو الوحيد اللي يقدر يضغط البازر السؤال التالي!",
+    "effect": "no_buzz", "effectTeam": "opponent"
+  },
+  {
+    "id": 5, "type": "مكافأة", "emoji": "🎁",
+    "title": "خلية مجانية!",
+    "description": "اختر أي خلية فارغة في الرقعة وخذها مجاناً دون سؤال!",
+    "effect": "free_cell", "effectTeam": "self"
+  },
+  {
+    "id": 6, "type": "مكافأة", "emoji": "⭐",
+    "title": "ضربة مزدوجة!",
+    "description": "الإجابة الصحيحة القادمة = خليتان بدل خلية واحدة!",
+    "effect": "double_next", "effectTeam": "self"
+  },
+  {
+    "id": 7, "type": "مكافأة", "emoji": "♾️",
+    "title": "بدون ضغط!",
+    "description": "السؤال القادم بدون عداد زمني - خذوا راحتكم وفكروا!",
+    "effect": "no_timer", "effectTeam": "self"
+  },
+  {
+    "id": 8, "type": "مكافأة", "emoji": "🛡️",
+    "title": "حصانة!",
+    "description": "اختر أي خلية عندك - الفريق المنافس ما يقدر يسرقها بالبطاقات!",
+    "effect": "shield_cell", "effectTeam": "self"
+  },
+  {
+    "id": 9, "type": "رهان", "emoji": "🔄",
+    "title": "تبادل الخلايا!",
+    "description": "اختر خلية خضراء وأخرى برتقالية - يتبادلان الملكية فوراً!",
+    "effect": "swap_cells", "effectTeam": "both"
+  },
+  {
+    "id": 10, "type": "رهان", "emoji": "🎰",
+    "title": "كل شيء أو لا شيء!",
+    "description": "الفريق الفائز بالسؤال التالي يأخذ خليتين - والخاسر يخسر خلية!",
+    "effect": "all_or_nothing", "effectTeam": "both"
+  },
+  {
+    "id": 11, "type": "تحدي", "emoji": "🧠",
+    "title": "سؤالان!",
+    "description": "الخلية المختارة تحتاج إجابتين صحيحتين لأخذها - واحدة ما تكفي!",
+    "effect": "double_question", "effectTeam": "current"
+  },
+  {
+    "id": 12, "type": "تحدي", "emoji": "🤫",
+    "title": "بدون بازر!",
+    "description": "السؤال التالي: سيد اللعبة يختار مباشرة من يجيب - بدون ضغط بازر!",
+    "effect": "no_buzz", "effectTeam": "current"
+  }
+]
